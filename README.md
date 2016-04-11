@@ -1,7 +1,7 @@
 Classification of SD-OCT volumes with multi pyramids, LBP and HOG descriptors: application to DME detections
 ============================================================================================================
 
-
+[![DOI](https://zenodo.org/badge/16195/I2Cvb/alsaih-2016-aug.svg)](https://zenodo.org/badge/latestdoi/16195/I2Cvb/alsaih-2016-aug)
 
 How to use the pipeline?
 -------
