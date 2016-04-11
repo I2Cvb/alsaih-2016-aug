@@ -93,7 +93,7 @@ From the root directory, launch MATLAB and run:
 
 #### Data variables
 
-In the file `pipeline/feature-validation/pipeline-validation.m`, you need to set the following variables:
+In the file `pipeline/feature-validation/pipeline_validation_***.m`, you need to set the following variables:
 
 - `data_directory`: this directory contains the classification results. The format used was `.mat`.
 - `gt_file`: this is the file containing the label for each volume. You will have to make your own strategy.
@@ -103,5 +103,7 @@ In the file `pipeline/feature-validation/pipeline-validation.m`, you need to set
 From the root directory, launch MATLAB and run:
 
 ```
->> run pipeline/feature-validation/pipeline-validation.m
+>> run pipeline/feature-validation/pipeline_validation_pca_hog.m
+>> run pipeline/feature-validation/pipeline_validation_pca_hog_lbp_8_16_14_ri.m
+>> run pipeline/feature-validation/pipeline_validation_pca_hog_lbp_8_16_14_nri.m
 ```
