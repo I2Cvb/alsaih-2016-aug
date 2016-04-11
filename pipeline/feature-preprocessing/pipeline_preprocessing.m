@@ -2,9 +2,8 @@ clear all;
 close all;
 clc;
 
-% Add the path for the function
-addpath('../util');
-addpath('../preprocessing');
+% Execute the setup for protoclass matlab
+run('../../../../third-party/protoclass_matlab/setup.m');
 
 % Define the size of the OCT volume
 x_size = 512;

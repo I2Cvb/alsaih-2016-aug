@@ -2,14 +2,14 @@ clear all;
 close all;
 clc;
 
-% Add the path for the function
-addpath('../detection');
+% Execute the setup for protoclass matlab
+run('../../../../third-party/protoclass_matlab/setup.m');
 
 % Data after the pre-processing
 data_directory = ['/data/retinopathy/OCT/SERI/pre_processed_data/' ...
                   'srinivasan_2014/'];
 store_directory = ['/data/retinopathy/OCT/SERI/feature_data/' ...
-                   'srinivasan_2014/lbp_8_1_ri/'];
+                   'alsaih_2016/lbp_24_3_ri/'];
 directory_info = dir(data_directory);
 
 poolobj = parpool('local', 40);
@@ -26,10 +26,10 @@ for idx_file = 1:size(directory_info)
         % Read the file
         load( filename );
 
-        % Extract the HOG features
+        % Extract the LBP features
         pyr_num_lev = 4;
-        NumNeighbors = 8;
-        Radius = 1;
+        NumNeighbors = 24;
+        Radius = 3;
         CellSize = [32 32];
         Upright = false;
 

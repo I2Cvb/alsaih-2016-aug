@@ -9,7 +9,7 @@ run('../../../../third-party/protoclass_matlab/setup.m');
 data_directory = ['/data/retinopathy/OCT/SERI/pre_processed_data/' ...
                   'srinivasan_2014/'];
 store_directory = ['/data/retinopathy/OCT/SERI/feature_data/' ...
-                   'srinivasan_2014/hog'];
+                   'alsaih_2016/lbp_8_1_ri/'];
 directory_info = dir(data_directory);
 
 poolobj = parpool('local', 40);
@@ -26,24 +26,23 @@ for idx_file = 1:size(directory_info)
         % Read the file
         load( filename );
 
-        % Extract the HOG features
+        % Extract the LBP features
         pyr_num_lev = 4;
-        CellSize = [4 4];
-        BlockSize = [2 2];
-        BlockOverlap = [1 1];
-        NumBins = 9;
+        NumNeighbors = 8;
+        Radius = 1;
+        CellSize = [32 32];
+        Upright = false;
 
-        hog_feat = extract_hog_volume( vol_cropped, pyr_num_lev, ...
-                                       CellSize, ...
-                                       BlockSize, BlockOverlap, ...
-                                       NumBins );
+        lbp_feat = extract_lbp_volume( vol_cropped, pyr_num_lev, ...
+                                       NumNeighbors, Radius, ...
+                                       CellSize, Upright);
         disp( [ 'Feature for file  ', directory_info(idx_file).name, ...
                 ' extracted' ] );
 
         % Store the data
         store_filename = strcat( store_directory, ...
                                  directory_info(idx_file).name ); 
-        save( store_filename, 'hog_feat' );
+        save( store_filename, 'lbp_feat' );
         disp( [ 'Feature for file  ', directory_info(idx_file).name, ...
                 ' stored' ] );
     end

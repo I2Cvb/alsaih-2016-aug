@@ -7,16 +7,16 @@ clc;
 data_directory_hog = ['/data/retinopathy/OCT/SERI/feature_data/' ...
                     'srinivasan_2014/hog/'];
 data_directory_lbp_1 = ['/data/retinopathy/OCT/SERI/feature_data/' ...
-                    'srinivasan_2014/lbp_8_1_ri/'];
+                    'alsaih_2016/lbp_8_1_nri/'];
 data_directory_lbp_2 = ['/data/retinopathy/OCT/SERI/feature_data/' ...
-                    'srinivasan_2014/lbp_16_2_ri/'];
+                    'alsaih_2016/lbp_16_2_nri/'];
 data_directory_lbp_3 = ['/data/retinopathy/OCT/SERI/feature_data/' ...
-                    'srinivasan_2014/lbp_24_3_ri/'];
+                    'alsaih_2016/lbp_24_3_nri/'];
 % Location to store the results
 store_directory = ['/data/retinopathy/OCT/SERI/results/' ...
-                   'srinivasan_2014/'];
+                   'alsaih_2016/'];
 % Location of the ground-truth
-gt_file = '../../../../data/data.csv';
+gt_file = '/data/retinopathy/OCT/SERI/data.xls';
 
 % Load the csv data
 [~, ~, raw_data] = xlsread(gt_file);
@@ -149,118 +149,114 @@ for idx_cv_lpo = 1:length(idx_class_pos)
     
     % disp('Projected the data using PCA for LBP');
 
-    % % FOR LBP FEATURES
-    % % CREATE THE TESTING SET
-    % testing_data_lbp_2 = [];
-    % % Load the positive patient
-    % load( strcat( data_directory_lbp_2, filename{ idx_class_pos(idx_cv_lpo) ...
-    %                } ) );
-    % % Concatenate the data
-    % testing_data_lbp_2 = [ testing_data_lbp_2 ; lbp_feat ];
-    % % Load the negative patient
-    % load( strcat( data_directory_lbp_2, filename{ idx_class_neg(idx_cv_lpo) ...
-    %                } ) );
-    % % Concatenate the data
-    % testing_data_lbp_2 = [ testing_data_lbp_2 ; lbp_feat ];
+    % FOR LBP FEATURES
+    % CREATE THE TESTING SET
+    testing_data_lbp_2 = [];
+    % Load the positive patient
+    load( strcat( data_directory_lbp_2, filename{ idx_class_pos(idx_cv_lpo) ...
+                   } ) );
+    % Concatenate the data
+    testing_data_lbp_2 = [ testing_data_lbp_2 ; lbp_feat ];
+    % Load the negative patient
+    load( strcat( data_directory_lbp_2, filename{ idx_class_neg(idx_cv_lpo) ...
+                   } ) );
+    % Concatenate the data
+    testing_data_lbp_2 = [ testing_data_lbp_2 ; lbp_feat ];
 
-    % disp('Created the testing set for LBP');
+    disp('Created the testing set for LBP');
 
-    % % CREATE THE TRAINING SET
-    % training_data_lbp_2 = [];
-    % for tr_idx = 1:length(idx_class_pos)
-    %     % Consider only the data which where not used for the
-    %     % testing set
-    %     if ( tr_idx ~= idx_cv_lpo)
-    %         % Load the positive patient
-    %         load( strcat( data_directory_lbp_2, filename{ idx_class_pos(tr_idx) ...
-    %                } ) );
-    %         % Concatenate the data
-    %         training_data_lbp_2 = [ training_data_lbp_2 ; lbp_feat ];
-    %         % Load the negative patient
-    %         load( strcat( data_directory_lbp_2, filename{ idx_class_neg(tr_idx) ...
-    %                } ) );
-    %         % Concatenate the data
-    %         training_data_lbp_2 = [ training_data_lbp_2 ; lbp_feat ];
-    %     end
-    % end
+    % CREATE THE TRAINING SET
+    training_data_lbp_2 = [];
+    for tr_idx = 1:length(idx_class_pos)
+        % Consider only the data which where not used for the
+        % testing set
+        if ( tr_idx ~= idx_cv_lpo)
+            % Load the positive patient
+            load( strcat( data_directory_lbp_2, filename{ idx_class_pos(tr_idx) ...
+                   } ) );
+            % Concatenate the data
+            training_data_lbp_2 = [ training_data_lbp_2 ; lbp_feat ];
+            % Load the negative patient
+            load( strcat( data_directory_lbp_2, filename{ idx_class_neg(tr_idx) ...
+                   } ) );
+            % Concatenate the data
+            training_data_lbp_2 = [ training_data_lbp_2 ; lbp_feat ];
+        end
+    end
 
-    % disp('Created the training set for LBP');
+    disp('Created the training set for LBP');
 
-    % % Make PCA decomposition keeping the 20 first components which
-    % % are the one > than 0.5 % of significance
-    % [coeff, score, latent, tsquared, explained, mu] = ...
-    %     pca(training_data_lbp_2, 'NumComponents', 20);
-    % % Apply the transformation to the training data
-    % training_data_lbp_2 = score;
-    % % Apply the transformation to the testing data
-    % % Remove the mean computed during the training of the PCA
-    % testing_data_lbp_2 = (bsxfun(@minus, testing_data_lbp_2, mu)) * coeff;
+    % Make PCA decomposition keeping the 20 first components which
+    % are the one > than 0.5 % of significance
+    [coeff, score, latent, tsquared, explained, mu] = ...
+        pca(training_data_lbp_2, 'NumComponents', 20);
+    % Apply the transformation to the training data
+    training_data_lbp_2 = score;
+    % Apply the transformation to the testing data
+    % Remove the mean computed during the training of the PCA
+    testing_data_lbp_2 = (bsxfun(@minus, testing_data_lbp_2, mu)) * coeff;
     
-    % disp('Projected the data using PCA for LBP');
+    disp('Projected the data using PCA for LBP');
 
-    % % FOR LBP FEATURES
-    % % CREATE THE TESTING SET
-    % testing_data_lbp_3 = [];
-    % % Load the positive patient
-    % load( strcat( data_directory_lbp_3, filename{ idx_class_pos(idx_cv_lpo) ...
-    %                } ) );
-    % % Concatenate the data
-    % testing_data_lbp_3 = [ testing_data_lbp_3 ; lbp_feat ];
-    % % Load the negative patient
-    % load( strcat( data_directory_lbp_3, filename{ idx_class_neg(idx_cv_lpo) ...
-    %                } ) );
-    % % Concatenate the data
-    % testing_data_lbp_3 = [ testing_data_lbp_3 ; lbp_feat ];
+    % FOR LBP FEATURES
+    % CREATE THE TESTING SET
+    testing_data_lbp_3 = [];
+    % Load the positive patient
+    load( strcat( data_directory_lbp_3, filename{ idx_class_pos(idx_cv_lpo) ...
+                   } ) );
+    % Concatenate the data
+    testing_data_lbp_3 = [ testing_data_lbp_3 ; lbp_feat ];
+    % Load the negative patient
+    load( strcat( data_directory_lbp_3, filename{ idx_class_neg(idx_cv_lpo) ...
+                   } ) );
+    % Concatenate the data
+    testing_data_lbp_3 = [ testing_data_lbp_3 ; lbp_feat ];
 
-    % disp('Created the testing set for LBP');
+    disp('Created the testing set for LBP');
 
-    % % CREATE THE TRAINING SET
-    % training_data_lbp_3 = [];
-    % for tr_idx = 1:length(idx_class_pos)
-    %     % Consider only the data which where not used for the
-    %     % testing set
-    %     if ( tr_idx ~= idx_cv_lpo)
-    %         % Load the positive patient
-    %         load( strcat( data_directory_lbp_3, filename{ idx_class_pos(tr_idx) ...
-    %                } ) );
-    %         % Concatenate the data
-    %         training_data_lbp_3 = [ training_data_lbp_3 ; lbp_feat ];
-    %         % Load the negative patient
-    %         load( strcat( data_directory_lbp_3, filename{ idx_class_neg(tr_idx) ...
-    %                } ) );
-    %         % Concatenate the data
-    %         training_data_lbp_3 = [ training_data_lbp_3 ; lbp_feat ];
-    %     end
-    % end
+    % CREATE THE TRAINING SET
+    training_data_lbp_3 = [];
+    for tr_idx = 1:length(idx_class_pos)
+        % Consider only the data which where not used for the
+        % testing set
+        if ( tr_idx ~= idx_cv_lpo)
+            % Load the positive patient
+            load( strcat( data_directory_lbp_3, filename{ idx_class_pos(tr_idx) ...
+                   } ) );
+            % Concatenate the data
+            training_data_lbp_3 = [ training_data_lbp_3 ; lbp_feat ];
+            % Load the negative patient
+            load( strcat( data_directory_lbp_3, filename{ idx_class_neg(tr_idx) ...
+                   } ) );
+            % Concatenate the data
+            training_data_lbp_3 = [ training_data_lbp_3 ; lbp_feat ];
+        end
+    end
 
-    % disp('Created the training set for LBP');
+    disp('Created the training set for LBP');
 
-    % % Make PCA decomposition keeping the 20 first components which
-    % % are the one > than 0.5 % of significance
-    % [coeff, score, latent, tsquared, explained, mu] = ...
-    %     pca(training_data_lbp_3, 'NumComponents', 20);
-    % % Apply the transformation to the training data
-    % training_data_lbp_3 = score;
-    % % Apply the transformation to the testing data
-    % % Remove the mean computed during the training of the PCA
-    % testing_data_lbp_3 = (bsxfun(@minus, testing_data_lbp_3, mu)) * coeff;
+    % Make PCA decomposition keeping the 20 first components which
+    % are the one > than 0.5 % of significance
+    [coeff, score, latent, tsquared, explained, mu] = ...
+        pca(training_data_lbp_3, 'NumComponents', 20);
+    % Apply the transformation to the training data
+    training_data_lbp_3 = score;
+    % Apply the transformation to the testing data
+    % Remove the mean computed during the training of the PCA
+    testing_data_lbp_3 = (bsxfun(@minus, testing_data_lbp_3, mu)) * coeff;
     
-    % disp('Projected the data using PCA for LBP');
+    disp('Projected the data using PCA for LBP');
 
     % Concatenate the data
-    training_data = [ training_data_hog, training_data_lbp_1 ];
-    testing_data = [ testing_data_hog, testing_data_lbp_1 ];
-    % training_data = [ training_data_hog, training_data_lbp_1, ...
-    %                  training_data_lbp_2, training_data_lbp_3 ];
-    % testing_data = [ testing_data_hog, testing_data_lbp_1, ...
-    %                  testing_data_lbp_2, testing_data_lbp_3 ];
+    training_data = [ training_data_hog, training_data_lbp_1, ...
+                     training_data_lbp_2, training_data_lbp_3 ];
+    testing_data = [ testing_data_hog, testing_data_lbp_1, ...
+                     testing_data_lbp_2, testing_data_lbp_3 ];
 
     % Perform the training of the SVM
-    % svmStruct = svmtrain( training_data, training_label );
     SVMModel = fitcsvm(training_data, training_label);
     disp('Trained SVM classifier');
     % Test the performance of the SVM
-    % pred_label = svmclassify(svmStruct, testing_data);
     pred_label = predict(SVMModel, testing_data);
     disp('Tested SVM classifier');
 
@@ -273,6 +269,6 @@ for idx_cv_lpo = 1:length(idx_class_pos)
     disp('Applied majority voting');
 end
 
-save(strcat(store_directory, 'predicition_hog_lbp_8_ri.mat'), 'pred_label_cv');
+save(strcat(store_directory, 'predicition_pca_hog_lbp_8_16_24_nri.mat'), 'pred_label_cv');
 
 %delete(poolobj);
